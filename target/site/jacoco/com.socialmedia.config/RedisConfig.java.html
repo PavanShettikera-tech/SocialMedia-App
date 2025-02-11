@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RedisConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Social Media App</a> &gt; <a href="index.source.html" class="el_package">com.socialmedia.config</a> &gt; <span class="el_source">RedisConfig.java</span></div><h1>RedisConfig.java</h1><pre class="source lang-java linenums">package com.socialmedia.config;
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+
+
+/**
+ * Configuration class for setting up Redis-related beans.
+ *
+ * &lt;p&gt;&lt;strong&gt;Feedback-Related Updates:&lt;/strong&gt;&lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;References: This class references LettuceConnectionFactory from Spring Data Redis.&lt;/li&gt;
+ *   &lt;li&gt;Functions: Single, larger methods for bean creation with additional detail.&lt;/li&gt;
+ *   &lt;li&gt;Comments: We specify the acceptable host/port configuration and pass/fail conditions for connection creation.&lt;/li&gt;
+ * &lt;/ul&gt;
+ */
+@Configuration
+<span class="nc" id="L22">public class RedisConfig {</span>
+
+
+    /**
+     * Creates and configures a {@link RedisConnectionFactory} bean using Lettuce.
+     *
+     * &lt;p&gt;
+     * &lt;strong&gt;Error Conditions:&lt;/strong&gt;  
+     * - If localhost:6379 is not running, a connection exception can occur at runtime.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;strong&gt;Acceptable Values / Range:&lt;/strong&gt;  
+     * - Typically localhost or a remote Redis server host, default port 6379.
+     * &lt;/p&gt;
+     *
+     * @return A configured {@link LettuceConnectionFactory} instance.
+     */
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        // For default settings, LettuceConnectionFactory connects to localhost:6379
+<span class="nc" id="L43">        return new LettuceConnectionFactory(&quot;localhost&quot;, 6379);</span>
+    }
+
+
+    /**
+     * Creates and configures a {@link RedisTemplate} bean for Redis operations.
+     *
+     * &lt;p&gt;
+     * &lt;strong&gt;Pass/Fail Conditions:&lt;/strong&gt;  
+     * Pass: Successfully creates a RedisTemplate with valid connection.  
+     * Fail: If the RedisConnectionFactory is null or cannot connect, bean creation fails.
+     * &lt;/p&gt;
+     *
+     * @return A configured {@link RedisTemplate} instance with String keys and Object values.
+     */
+    @Bean
+    public RedisTemplate&lt;String, Object&gt; redisTemplate() {
+<span class="nc" id="L60">        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();</span>
+<span class="nc" id="L61">        template.setConnectionFactory(redisConnectionFactory());</span>
+<span class="nc" id="L62">        return template;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

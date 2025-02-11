@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Social Media App</a> &gt; <a href="index.source.html" class="el_package">com.socialmedia.controller</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.socialmedia.controller;
+
+
+import com.socialmedia.dto.UserDTO;
+import com.socialmedia.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.util.List;
+
+
+/**
+ * REST controller for managing users in the Social Media Application.
+ *
+ * &lt;p&gt;&lt;strong&gt;Feedback-Related Updates:&lt;/strong&gt;&lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;References: Cross-references {@link UserService}, which references {@link com.socialmedia.repository.UserRepository}.&lt;/li&gt;
+ *   &lt;li&gt;Functions: CRUD + login with expanded doc. Avoids extra small helper methods.&lt;/li&gt;
+ *   &lt;li&gt;Comments: Parameter constraints (unique email, password constraints) and pass/fail conditions explained.&lt;/li&gt;
+ * &lt;/ul&gt;
+ */
+@RestController
+@RequestMapping(&quot;/api/users&quot;)
+<span class="fc" id="L26">public class UserController {</span>
+
+
+    @Autowired
+    private UserService userService;
+
+
+    /**
+     * Registers a new user.
+     *
+     * &lt;p&gt;&lt;strong&gt;Acceptable Values:&lt;/strong&gt;  
+     * - Non-empty email (must not already be used).  
+     * - Password non-empty or meets some security constraints.
+     * &lt;/p&gt;
+     *
+     * @param userDTO The data transfer object containing user registration details.
+     * @return Created UserDTO (HTTP 201).
+     */
+    @PostMapping(&quot;/register&quot;)
+    public ResponseEntity&lt;UserDTO&gt; registerUser(@RequestBody UserDTO userDTO) {
+<span class="fc" id="L46">        UserDTO createdUser = userService.registerUser(userDTO);</span>
+<span class="fc" id="L47">        return new ResponseEntity&lt;&gt;(createdUser, HttpStatus.CREATED);</span>
+    }
+
+
+    /**
+     * Authenticates a user and returns an authentication token (mocked).
+     *
+     * @param userDTO The data transfer object containing user login credentials.
+     * @return A token string (HTTP 200) on success.
+     */
+    @PostMapping(&quot;/login&quot;)
+    public ResponseEntity&lt;String&gt; loginUser(@RequestBody UserDTO userDTO) {
+<span class="fc" id="L59">        String token = userService.loginUser(userDTO);</span>
+<span class="fc" id="L60">        return new ResponseEntity&lt;&gt;(token, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Retrieves all users.
+     *
+     * &lt;p&gt;Returns an empty list if no users found.&lt;/p&gt;
+     *
+     * @return A list of UserDTO (HTTP 200).
+     */
+    @GetMapping
+    public ResponseEntity&lt;List&lt;UserDTO&gt;&gt; getAllUsers() {
+<span class="fc" id="L73">        List&lt;UserDTO&gt; users = userService.getAllUsers();</span>
+<span class="fc" id="L74">        return new ResponseEntity&lt;&gt;(users, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param id The ID of the user to be retrieved.
+     * @return The corresponding UserDTO (HTTP 200).
+     * @throws com.socialmedia.exception.ResourceNotFoundException If user not found.
+     */
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;UserDTO&gt; getUserById(@PathVariable Long id) {
+<span class="fc" id="L87">        UserDTO user = userService.getUserById(id);</span>
+<span class="fc" id="L88">        return new ResponseEntity&lt;&gt;(user, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Updates an existing user.
+     *
+     * @param id The ID of the user to be updated.
+     * @param userDTO The data transfer object with updated user details.
+     * @return Updated UserDTO (HTTP 200).
+     * @throws com.socialmedia.exception.ResourceNotFoundException If user not found.
+     */
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;UserDTO&gt; updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+<span class="fc" id="L102">        UserDTO updatedUser = userService.updateUser(id, userDTO);</span>
+<span class="fc" id="L103">        return new ResponseEntity&lt;&gt;(updatedUser, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Deletes a user.
+     *
+     * @param id The ID of the user to be deleted.
+     * @return HTTP 204 No Content on success.
+     * @throws com.socialmedia.exception.ResourceNotFoundException If user not found.
+     */
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteUser(@PathVariable Long id) {
+<span class="fc" id="L116">        userService.deleteUser(id);</span>
+<span class="fc" id="L117">        return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

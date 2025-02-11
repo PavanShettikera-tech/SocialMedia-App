@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Post.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Social Media App</a> &gt; <a href="index.source.html" class="el_package">com.socialmedia.model</a> &gt; <span class="el_source">Post.java</span></div><h1>Post.java</h1><pre class="source lang-java linenums">package com.socialmedia.model;
+
+import lombok.*;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Getter
+<span class="fc" id="L11">@Setter</span>
+<span class="fc" id="L12">@ToString(exclude = {&quot;comments&quot;, &quot;likes&quot;, &quot;media&quot;})</span>
+<span class="fc" id="L13">@NoArgsConstructor</span>
+<span class="fc" id="L14">@AllArgsConstructor</span>
+<span class="pc bpc" id="L15" title="5 of 14 branches missed.">@EqualsAndHashCode(onlyExplicitlyIncluded = true)</span>
+public class Post {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+<span class="fc" id="L21">    private Long id;</span>
+
+<span class="fc" id="L23">    private String title;</span>
+
+    @Column(columnDefinition = &quot;TEXT&quot;)
+<span class="fc" id="L26">    private String content;</span>
+
+<span class="fc" id="L28">    private LocalDateTime createdAt;</span>
+<span class="fc" id="L29">    private LocalDateTime updatedAt;</span>
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;user_id&quot;)
+<span class="fc" id="L33">    private User user;</span>
+
+<span class="fc" id="L35">    @OneToMany(mappedBy = &quot;post&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span>
+<span class="fc" id="L36">    private List&lt;Comment&gt; comments = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L38">    @OneToMany(mappedBy = &quot;post&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span>
+<span class="fc" id="L39">    private List&lt;Like&gt; likes = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L41">    @OneToMany(mappedBy = &quot;post&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span>
+<span class="fc" id="L42">    private List&lt;Media&gt; media = new ArrayList&lt;&gt;();</span>
+
+    @PrePersist
+    protected void onCreate() {
+<span class="fc" id="L46">        LocalDateTime now = LocalDateTime.now();</span>
+<span class="fc" id="L47">        this.createdAt = now;</span>
+<span class="fc" id="L48">        this.updatedAt = now;</span>
+<span class="fc" id="L49">    }</span>
+
+    @PreUpdate
+    protected void onUpdate() {
+<span class="fc" id="L53">        this.updatedAt = LocalDateTime.now();</span>
+<span class="fc" id="L54">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

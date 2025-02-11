@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Social Media App</a> &gt; <a href="index.source.html" class="el_package">com.socialmedia.dto</a> &gt; <span class="el_source">UserDTO.java</span></div><h1>UserDTO.java</h1><pre class="source lang-java linenums">package com.socialmedia.dto;
+
+
+import lombok.*;
+
+
+/**
+ * Data Transfer Object for managing users.
+ *
+ * &lt;p&gt;&lt;strong&gt;Constraints:&lt;/strong&gt;&lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;email unique, not empty&lt;/li&gt;
+ *   &lt;li&gt;password not empty (more complex checks can be added in Service)&lt;/li&gt;
+ * &lt;/ul&gt;
+ */
+<span class="pc bpc" id="L16" title="9 of 38 branches missed.">@Data</span>
+<span class="fc" id="L17">@NoArgsConstructor</span>
+<span class="fc" id="L18">@AllArgsConstructor</span>
+public class UserDTO {
+
+
+<span class="fc" id="L22">    private Long id;</span>
+    
+    /**
+     * Typically the username or full name of the user (manager feedback: &quot;More detail&quot;).
+     */
+<span class="fc" id="L27">    private String username;</span>
+
+
+    /**
+     * The password for the user account (must be hashed/stored securely).
+     */
+<span class="fc" id="L33">    private String password;</span>
+
+
+    /**
+     * The email address of the user (unique in system).
+     */
+<span class="fc" id="L39">    private String email;</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

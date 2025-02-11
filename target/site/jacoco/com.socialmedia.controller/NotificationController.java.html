@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotificationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Social Media App</a> &gt; <a href="index.source.html" class="el_package">com.socialmedia.controller</a> &gt; <span class="el_source">NotificationController.java</span></div><h1>NotificationController.java</h1><pre class="source lang-java linenums">package com.socialmedia.controller;
+
+
+import com.socialmedia.dto.NotificationDTO;
+import com.socialmedia.service.NotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.util.List;
+
+
+/**
+ * REST controller for managing notifications in the Social Media Application.
+ *
+ * &lt;p&gt;&lt;strong&gt;Feedback-Related Updates:&lt;/strong&gt;&lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;References: Cross-references {@link NotificationService} -&gt; {@code NotificationRepository}.&lt;/li&gt;
+ *   &lt;li&gt;Functions: Consolidated endpoints with doc about constraints (user must exist) and pass/fail conditions.&lt;/li&gt;
+ *   &lt;li&gt;Comments: Parameter constraints for userId, how read status is handled, etc.&lt;/li&gt;
+ * &lt;/ul&gt;
+ */
+@RestController
+@RequestMapping(&quot;/api/notifications&quot;)
+<span class="fc" id="L26">public class NotificationController {</span>
+
+
+    @Autowired
+    private NotificationService notificationService;
+
+
+    /**
+     * Creates a new notification.
+     *
+     * &lt;p&gt;&lt;strong&gt;Pass/Fail Condition:&lt;/strong&gt;  
+     * Pass: If userId is valid and NotificationDTO has valid data.  
+     * Fail: If user not found (ResourceNotFoundException), or invalid input.
+     * &lt;/p&gt;
+     *
+     * @param notificationDTO The data transfer object containing notification details.
+     * @return Created NotificationDTO (HTTP 201).
+     */
+    @PostMapping
+    public ResponseEntity&lt;NotificationDTO&gt; createNotification(@RequestBody NotificationDTO notificationDTO) {
+<span class="fc" id="L46">        NotificationDTO createdNotification = notificationService.createNotification(notificationDTO);</span>
+<span class="fc" id="L47">        return new ResponseEntity&lt;&gt;(createdNotification, HttpStatus.CREATED);</span>
+    }
+
+
+    /**
+     * Retrieves all notifications for a specific user.
+     *
+     * @param userId The ID of the user for whom notifications are to be retrieved.
+     * @return A list of NotificationDTO with HTTP 200 status.
+     */
+    @GetMapping(&quot;/user/{userId}&quot;)
+    public ResponseEntity&lt;List&lt;NotificationDTO&gt;&gt; getNotificationsByUserId(@PathVariable Long userId) {
+<span class="fc" id="L59">        List&lt;NotificationDTO&gt; notifications = notificationService.getNotificationsByUserId(userId);</span>
+<span class="fc" id="L60">        return new ResponseEntity&lt;&gt;(notifications, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Updates an existing notification.
+     *
+     * &lt;p&gt;&lt;strong&gt;Error Conditions:&lt;/strong&gt;  
+     * - If the notification with specified ID does not exist, ResourceNotFoundException is thrown.
+     * &lt;/p&gt;
+     *
+     * @param id The ID of the notification to be updated.
+     * @param notificationDTO The data transfer object containing updated notification details.
+     * @return Updated NotificationDTO (HTTP 200).
+     */
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;NotificationDTO&gt; updateNotification(@PathVariable Long id,
+                                                              @RequestBody NotificationDTO notificationDTO) {
+<span class="fc" id="L78">        NotificationDTO updatedNotification = notificationService.updateNotification(id, notificationDTO);</span>
+<span class="fc" id="L79">        return new ResponseEntity&lt;&gt;(updatedNotification, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Deletes a notification.
+     *
+     * &lt;p&gt;&lt;strong&gt;Pass/Fail Condition:&lt;/strong&gt;  
+     * Pass: If ID exists, notification removed.  
+     * Fail: If ID not found, throws ResourceNotFoundException.
+     * &lt;/p&gt;
+     *
+     * @param id The ID of the notification to be deleted.
+     * @return HTTP 204 No Content on success.
+     */
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteNotification(@PathVariable Long id) {
+<span class="fc" id="L96">        notificationService.deleteNotification(id);</span>
+<span class="fc" id="L97">        return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

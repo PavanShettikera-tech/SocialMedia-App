@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LikeService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Social Media App</a> &gt; <a href="index.source.html" class="el_package">com.socialmedia.service</a> &gt; <span class="el_source">LikeService.java</span></div><h1>LikeService.java</h1><pre class="source lang-java linenums">package com.socialmedia.service;
+
+import com.socialmedia.dto.LikeDTO;
+import com.socialmedia.exception.ResourceNotFoundException;
+import com.socialmedia.model.Like;
+import com.socialmedia.model.Post;
+import com.socialmedia.model.User;
+import com.socialmedia.repository.LikeRepository;
+import com.socialmedia.repository.PostRepository;
+import com.socialmedia.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="fc" id="L15">public class LikeService {</span>
+
+    @Autowired
+    private LikeRepository likeRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public LikeDTO likePost(LikeDTO likeDTO) {
+<span class="fc" id="L27">        Post post = postRepository.findById(likeDTO.getPostId())</span>
+<span class="fc" id="L28">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post not found with id &quot; + likeDTO.getPostId()));</span>
+<span class="fc" id="L29">        User user = userRepository.findById(likeDTO.getUserId())</span>
+<span class="fc" id="L30">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User not found with id &quot; + likeDTO.getUserId()));</span>
+
+<span class="fc" id="L32">        Like like = new Like();</span>
+<span class="fc" id="L33">        like.setPost(post);</span>
+<span class="fc" id="L34">        like.setUser(user);</span>
+<span class="fc" id="L35">        Like saved = likeRepository.save(like);</span>
+
+<span class="fc" id="L37">        return mapToDTO(saved);</span>
+    }
+
+    public Long getLikesCount(Long postId) {
+<span class="fc" id="L41">        return likeRepository.countByPostId(postId);</span>
+    }
+
+    public void unlikePost(Long id) {
+<span class="fc" id="L45">        Like existingLike = likeRepository.findById(id)</span>
+<span class="fc" id="L46">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Like not found with id &quot; + id));</span>
+<span class="fc" id="L47">        likeRepository.delete(existingLike);</span>
+<span class="fc" id="L48">    }</span>
+
+    // Public so the test can call it
+    public LikeDTO mapToDTO(Like like) {
+<span class="fc" id="L52">        LikeDTO dto = new LikeDTO();</span>
+<span class="fc" id="L53">        dto.setId(like.getId());</span>
+<span class="fc" id="L54">        dto.setPostId(like.getPost().getId());</span>
+<span class="fc" id="L55">        dto.setUserId(like.getUser().getId());</span>
+<span class="fc" id="L56">        return dto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Social Media App</a> &gt; <a href="index.source.html" class="el_package">com.socialmedia.controller</a> &gt; <span class="el_source">PostController.java</span></div><h1>PostController.java</h1><pre class="source lang-java linenums">package com.socialmedia.controller;
+
+
+import com.socialmedia.dto.PostDTO;
+import com.socialmedia.exception.ResourceNotFoundException;
+import com.socialmedia.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+
+import java.util.List;
+
+
+/**
+ * REST controller for managing posts in the Social Media Application.
+ *
+ * &lt;p&gt;&lt;strong&gt;Feedback-Related Updates:&lt;/strong&gt;&lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;References: Uses {@link PostService} which references {@link com.socialmedia.repository.PostRepository}.&lt;/li&gt;
+ *   &lt;li&gt;Functions: CRUD with expanded doc about constraints (e.g., user must exist for creation) and pass/fail conditions.&lt;/li&gt;
+ *   &lt;li&gt;Comments: Error conditions clearly explained.&lt;/li&gt;
+ * &lt;/ul&gt;
+ */
+@RestController
+@RequestMapping(&quot;/api/posts&quot;)
+<span class="fc" id="L28">public class PostController extends ResponseEntityExceptionHandler {</span>
+
+
+    @Autowired
+    private PostService postService;
+
+
+    /**
+     * Creates a new post.
+     *
+     * &lt;p&gt;&lt;strong&gt;Pass/Fail Condition:&lt;/strong&gt;  
+     * Pass: If userId is valid, title/content are valid.  
+     * Fail: If user is missing (ResourceNotFoundException) or invalid content triggers some validation.
+     * &lt;/p&gt;
+     *
+     * @param postDTO The data transfer object containing post details.
+     * @return Created PostDTO (HTTP 201).
+     */
+    @PostMapping
+    public ResponseEntity&lt;PostDTO&gt; createPost(@RequestBody PostDTO postDTO) {
+<span class="fc" id="L48">        PostDTO createdPost = postService.createPost(postDTO);</span>
+<span class="fc" id="L49">        return new ResponseEntity&lt;&gt;(createdPost, HttpStatus.CREATED);</span>
+    }
+
+
+    /**
+     * Retrieves all posts.
+     *
+     * &lt;p&gt;No specific error condition: returns empty list if none exist.&lt;/p&gt;
+     *
+     * @return A list of PostDTO (HTTP 200).
+     */
+    @GetMapping
+    public ResponseEntity&lt;List&lt;PostDTO&gt;&gt; getAllPosts() {
+<span class="fc" id="L62">        List&lt;PostDTO&gt; posts = postService.getAllPosts();</span>
+<span class="fc" id="L63">        return new ResponseEntity&lt;&gt;(posts, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Retrieves a post by its ID.
+     *
+     * @param id The ID of the post to be retrieved.
+     * @return The corresponding PostDTO (HTTP 200).
+     * @throws ResourceNotFoundException If the post with given ID is not found.
+     */
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;PostDTO&gt; getPostById(@PathVariable Long id) {
+<span class="fc" id="L76">        PostDTO post = postService.getPostById(id);</span>
+<span class="fc" id="L77">        return new ResponseEntity&lt;&gt;(post, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Updates an existing post.
+     *
+     * @param id The ID of the post to be updated.
+     * @param postDTO The data transfer object containing updated post details.
+     * @return Updated PostDTO (HTTP 200).
+     * @throws ResourceNotFoundException If the post with given ID does not exist.
+     */
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;PostDTO&gt; updatePost(@PathVariable Long id, @RequestBody PostDTO postDTO) {
+<span class="fc" id="L91">        PostDTO updatedPost = postService.updatePost(id, postDTO);</span>
+<span class="fc" id="L92">        return new ResponseEntity&lt;&gt;(updatedPost, HttpStatus.OK);</span>
+    }
+
+
+    /**
+     * Deletes a post.
+     *
+     * @param id The ID of the post to be deleted.
+     * @return HTTP 204 No Content on success.
+     * @throws ResourceNotFoundException If the post with given ID is not found.
+     */
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deletePost(@PathVariable Long id) {
+<span class="fc" id="L105">        postService.deletePost(id);</span>
+<span class="fc" id="L106">        return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
+    }
+    
+    /**
+     * Exception handler for {@link ResourceNotFoundException}.
+     *
+     * &lt;p&gt;Returns 404 if resource is missing.&lt;/p&gt;
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;String&gt; handleNotFoundException(ResourceNotFoundException ex) {
+<span class="fc" id="L116">        return new ResponseEntity&lt;&gt;(ex.getMessage(), HttpStatus.NOT_FOUND);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

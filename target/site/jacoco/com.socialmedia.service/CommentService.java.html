@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommentService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Social Media App</a> &gt; <a href="index.source.html" class="el_package">com.socialmedia.service</a> &gt; <span class="el_source">CommentService.java</span></div><h1>CommentService.java</h1><pre class="source lang-java linenums">package com.socialmedia.service;
+
+import com.socialmedia.dto.CommentDTO;
+import com.socialmedia.exception.ResourceNotFoundException;
+import com.socialmedia.model.Comment;
+import com.socialmedia.model.Post;
+import com.socialmedia.model.User;
+import com.socialmedia.repository.CommentRepository;
+import com.socialmedia.repository.PostRepository;
+import com.socialmedia.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Service class for managing comments.
+ */
+@Service
+<span class="fc" id="L21">public class CommentService {</span>
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public CommentDTO createComment(CommentDTO commentDTO) {
+        // Removed colon from &quot;Post not found with id&quot;
+<span class="fc" id="L34">        Post post = postRepository.findById(commentDTO.getPostId())</span>
+<span class="fc" id="L35">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post not found with id &quot; + commentDTO.getPostId()));</span>
+
+<span class="fc" id="L37">        User user = userRepository.findById(commentDTO.getUserId())</span>
+<span class="fc" id="L38">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User not found with id &quot; + commentDTO.getUserId()));</span>
+
+<span class="fc" id="L40">        Comment comment = new Comment();</span>
+<span class="fc" id="L41">        comment.setContent(commentDTO.getContent());</span>
+<span class="fc" id="L42">        comment.setPost(post);</span>
+<span class="fc" id="L43">        comment.setUser(user);</span>
+
+<span class="fc" id="L45">        Comment savedComment = commentRepository.save(comment);</span>
+
+<span class="fc" id="L47">        return new CommentDTO(</span>
+<span class="fc" id="L48">                savedComment.getId(),</span>
+<span class="fc" id="L49">                savedComment.getContent(),</span>
+<span class="fc" id="L50">                savedComment.getPost().getId(),</span>
+<span class="fc" id="L51">                savedComment.getUser().getId()</span>
+        );
+    }
+
+    public List&lt;CommentDTO&gt; getCommentsByPostId(Long postId) {
+<span class="fc" id="L56">        List&lt;Comment&gt; comments = commentRepository.findByPostId(postId);</span>
+<span class="fc" id="L57">        return comments.stream()</span>
+<span class="fc" id="L58">                .map(c -&gt; new CommentDTO(c.getId(), c.getContent(), c.getPost().getId(), c.getUser().getId()))</span>
+<span class="fc" id="L59">                .collect(Collectors.toList());</span>
+    }
+
+    public CommentDTO updateComment(Long id, CommentDTO commentDTO) {
+<span class="fc" id="L63">        Comment existing = commentRepository.findById(id)</span>
+<span class="fc" id="L64">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Comment not found with id &quot; + id));</span>
+<span class="fc" id="L65">        existing.setContent(commentDTO.getContent());</span>
+<span class="fc" id="L66">        Comment updated = commentRepository.save(existing);</span>
+
+<span class="fc" id="L68">        return new CommentDTO(</span>
+<span class="fc" id="L69">                updated.getId(),</span>
+<span class="fc" id="L70">                updated.getContent(),</span>
+<span class="fc" id="L71">                updated.getPost().getId(),</span>
+<span class="fc" id="L72">                updated.getUser().getId()</span>
+        );
+    }
+
+    public void deleteComment(Long id) {
+<span class="fc" id="L77">        Comment existing = commentRepository.findById(id)</span>
+<span class="fc" id="L78">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Comment not found with id &quot; + id));</span>
+<span class="fc" id="L79">        commentRepository.delete(existing);</span>
+<span class="fc" id="L80">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
