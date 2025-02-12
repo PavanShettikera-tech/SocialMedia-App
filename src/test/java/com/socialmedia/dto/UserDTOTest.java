@@ -8,13 +8,26 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link UserDTO}.
- * <p>
- * This class contains unit tests to verify the correctness of the {@link UserDTO} class,
- * including its getters, setters, constructors, {@code equals()}, {@code hashCode()},
- * and {@code toString()} methods. It ensures that the DTO behaves as expected under
- * various scenarios.
+ *
+ * <p><strong>Premise:</strong>
+ * Ensures that getters, setters, constructors, {@code equals()}, {@code hashCode()},
+ * {@code toString()}, and {@code canEqual()} methods function correctly for the {@link UserDTO} class.
  * </p>
- * 
+ *
+ * <p><strong>Error Conditions / Acceptable Values:</strong></p>
+ * <ul>
+ *   <li><code>id</code>: Should be a positive {@code Long} value or {@code null}.</li>
+ *   <li><code>username</code>: Should be a non-null {@code String} with a valid format.</li>
+ *   <li><code>password</code>: Should be a non-null {@code String} with a secure format.</li>
+ *   <li><code>email</code>: Should be a non-null {@code String} following a valid email pattern.</li>
+ * </ul>
+ *
+ * <p><strong>Pass/Fail Conditions:</strong>
+ * <ul>
+ *   <li><strong>Pass:</strong> All methods behave as expected, correctly handling valid and edge-case inputs.</li>
+ *   <li><strong>Fail:</strong> Any method does not handle inputs correctly, leading to incorrect behavior or exceptions.</li>
+ * </ul>
+ *
  * @version 1.0
  * @since 2025-01-28
  */
@@ -26,6 +39,15 @@ class UserDTOTest {
 
     /**
      * Initializes sample {@link UserDTO} instances before each test.
+     *
+     * <p><strong>Premise:</strong> Sets up identical and distinct {@link UserDTO} objects to test equality and hashing.</p>
+     *
+     * <p><strong>Pass/Fail Conditions:</strong>
+     * <ul>
+     *   <li><strong>Pass:</strong> All objects are initialized correctly with the specified parameters.</li>
+     *   <li><strong>Fail:</strong> Objects are not initialized as expected, leading to test failures.</li>
+     * </ul>
+     * </p>
      */
     @BeforeEach
     void setUp() {
@@ -36,9 +58,23 @@ class UserDTOTest {
 
     /**
      * Tests the {@code equals()} and {@code hashCode()} methods of {@link UserDTO}.
-     * <p>
+     *
+     * <p><strong>Premise:</strong>
      * Verifies that two identical DTOs are equal and have the same hash code,
      * while different DTOs are not equal and have different hash codes.
+     * </p>
+     *
+     * <p><strong>Error Conditions / Acceptable Values:</strong>
+     * Ensures that equality checks handle {@code null} and different object types correctly.
+     * </p>
+     *
+     * <p><strong>Pass/Fail Conditions:</strong>
+     * <ul>
+     *   <li><strong>Pass:</strong> Equal objects are recognized as equal with matching hash codes,
+     *       and unequal objects are correctly identified as not equal.</li>
+     *   <li><strong>Fail:</strong> If equal objects are not recognized as equal, hash codes differ,
+     *       or unequal objects are mistakenly identified as equal.</li>
+     * </ul>
      * </p>
      */
     @Test
@@ -59,8 +95,20 @@ class UserDTOTest {
 
     /**
      * Tests field comparisons for {@link UserDTO}.
-     * <p>
+     *
+     * <p><strong>Premise:</strong>
      * Verifies that changing individual fields affects equality as expected.
+     * </p>
+     *
+     * <p><strong>Error Conditions / Acceptable Values:</strong>
+     * Ensures that each field is compared correctly and that differences lead to inequality.
+     * </p>
+     *
+     * <p><strong>Pass/Fail Conditions:</strong>
+     * <ul>
+     *   <li><strong>Pass:</strong> DTOs with different fields are not equal.</li>
+     *   <li><strong>Fail:</strong> DTOs with different fields are incorrectly considered equal.</li>
+     * </ul>
      * </p>
      */
     @Test
@@ -87,8 +135,20 @@ class UserDTOTest {
 
     /**
      * Tests handling of null fields in {@link UserDTO}.
-     * <p>
+     *
+     * <p><strong>Premise:</strong>
      * Verifies that DTOs with null fields behave correctly in equality checks.
+     * </p>
+     *
+     * <p><strong>Error Conditions / Acceptable Values:</strong>
+     * Checks how {@code equals()} handles {@code null} values in various fields.
+     * </p>
+     *
+     * <p><strong>Pass/Fail Conditions:</strong>
+     * <ul>
+     *   <li><strong>Pass:</strong> DTOs with all fields null are equal to each other and not equal to populated DTOs.</li>
+     *   <li><strong>Fail:</strong> Equality checks do not correctly handle {@code null} fields.</li>
+     * </ul>
      * </p>
      */
     @Test
@@ -108,8 +168,20 @@ class UserDTOTest {
 
     /**
      * Tests the {@code toString()} method of {@link UserDTO}.
-     * <p>
+     *
+     * <p><strong>Premise:</strong>
      * Verifies that the string representation contains all relevant fields.
+     * </p>
+     *
+     * <p><strong>Error Conditions / Acceptable Values:</strong>
+     * Ensures that the {@code toString()} output includes non-null field values.
+     * </p>
+     *
+     * <p><strong>Pass/Fail Conditions:</strong>
+     * <ul>
+     *   <li><strong>Pass:</strong> The {@code toString()} output includes all set field values.</li>
+     *   <li><strong>Fail:</strong> Any field value is missing or incorrectly represented in the output.</li>
+     * </ul>
      * </p>
      */
     @Test
@@ -126,8 +198,20 @@ class UserDTOTest {
 
     /**
      * Tests the {@code canEqual()} method of {@link UserDTO}.
-     * <p>
+     *
+     * <p><strong>Premise:</strong>
      * Verifies that {@code canEqual()} behaves correctly when comparing with the same class and different classes.
+     * </p>
+     *
+     * <p><strong>Error Conditions / Acceptable Values:</strong>
+     * Ensures that {@code canEqual()} returns {@code true} only for instances of {@link UserDTO} and {@code false} otherwise.
+     * </p>
+     *
+     * <p><strong>Pass/Fail Conditions:</strong>
+     * <ul>
+     *   <li><strong>Pass:</strong> {@code canEqual()} returns {@code true} for {@link UserDTO} instances and {@code false} for other types.</li>
+     *   <li><strong>Fail:</strong> {@code canEqual()} does not correctly identify compatible or incompatible types.</li>
+     * </ul>
      * </p>
      */
     @Test
@@ -140,8 +224,28 @@ class UserDTOTest {
 
     /**
      * Tests the getters and setters of {@link UserDTO}.
-     * <p>
+     *
+     * <p><strong>Premise:</strong>
      * Verifies that each field can be set and retrieved correctly.
+     * </p>
+     *
+     * <p><strong>Parameters:</strong>
+     * <ul>
+     *   <li><code>id</code> - {@code Long} representing the user ID. Acceptable range: positive values or {@code null}.</li>
+     *   <li><code>username</code> - {@code String} representing the username. Should be non-null.</li>
+     *   <li><code>password</code> - {@code String} representing the password. Should be non-null.</li>
+     *   <li><code>email</code> - {@code String} representing the email. Should follow a valid email pattern.</li>
+     * </ul>
+     *
+     * <p><strong>Assertions:</strong>
+     * Validates that each setter correctly assigns the value and each getter retrieves the expected value.
+     * </p>
+     *
+     * <p><strong>Pass/Fail Conditions:</strong>
+     * <ul>
+     *   <li><strong>Pass:</strong> All getters return values matching those set by the setters.</li>
+     *   <li><strong>Fail:</strong> Any getter does not return the expected value.</li>
+     * </ul>
      * </p>
      */
     @Test
@@ -161,8 +265,26 @@ class UserDTOTest {
 
     /**
      * Tests the constructors of {@link UserDTO}.
-     * <p>
+     *
+     * <p><strong>Premise:</strong>
      * Verifies that the default and parameterized constructors initialize fields correctly.
+     * </p>
+     *
+     * <p><strong>Parameters:</strong>
+     * <ul>
+     *   <li><strong>Default Constructor:</strong> Initializes all fields to {@code null}.</li>
+     *   <li><strong>Parameterized Constructor:</strong> Initializes fields with provided values.</li>
+     * </ul>
+     *
+     * <p><strong>Assertions:</strong>
+     * Ensures that fields are set to expected values after construction.
+     * </p>
+     *
+     * <p><strong>Pass/Fail Conditions:</strong>
+     * <ul>
+     *   <li><strong>Pass:</strong> Constructors initialize fields as expected.</li>
+     *   <li><strong>Fail:</strong> Fields are not initialized correctly by constructors.</li>
+     * </ul>
      * </p>
      */
     @Test
