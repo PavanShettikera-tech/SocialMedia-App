@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * It ensures that the {@link Comment} class behaves as expected under various scenarios.
  * </p>
  * 
- * @version 1.0
- * @since 2025-01-28
+ * <p><b>Version:</b> 1.0</p>
+ * <p><b>Since:</b> 2025-01-28</p>
  */
 class CommentTest {
 
@@ -93,6 +93,17 @@ class CommentTest {
 
     /**
      * Tests the no-args constructor and verifies that all fields are initialized to their default values.
+     * <p>
+     * Ensures that:
+     * <ul>
+     *     <li>Numeric fields like {@code id} are {@code null}.</li>
+     *     <li>String fields like {@code content} are {@code null}.</li>
+     *     <li>Associations like {@code post} and {@code user} are {@code null}.</li>
+     *     <li>Timestamps like {@code createdAt} and {@code updatedAt} are {@code null}.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> All assertions hold true, indicating proper initialization.</p>
      */
     @Test
     @DisplayName("Test no-args constructor and default values")
@@ -108,6 +119,15 @@ class CommentTest {
 
     /**
      * Tests the all-arguments constructor by verifying that all fields are correctly initialized.
+     * <p>
+     * Creates a {@link Comment} instance using the all-args constructor with specific values and ensures that:
+     * <ul>
+     *     <li>All fields are set to the provided values.</li>
+     *     <li>Associations like {@code post} and {@code user} are correctly assigned.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> All fields match the values passed to the constructor.</p>
      */
     @Test
     @DisplayName("Test all-args constructor")
@@ -132,6 +152,15 @@ class CommentTest {
 
     /**
      * Tests the getters and setters by setting each field and verifying the values.
+     * <p>
+     * Ensures that:
+     * <ul>
+     *     <li>Each setter correctly assigns the provided value.</li>
+     *     <li>Each getter retrieves the expected value.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> All fields are correctly set and retrieved.</p>
      */
     @Test
     @DisplayName("Test getters and setters")
@@ -155,6 +184,19 @@ class CommentTest {
 
     /**
      * Tests the {@code equals()} method for reflexivity, symmetry, transitivity, and null comparison.
+     * <p>
+     * Validates that:
+     * <ul>
+     *     <li>A comment is equal to itself (reflexive).</li>
+     *     <li>Two comments with identical attributes are equal (symmetric).</li>
+     *     <li>Equality is transitive across multiple identical comments.</li>
+     *     <li>Consistency is maintained across multiple invocations.</li>
+     *     <li>A comment is not equal to {@code null} or an object of a different type.</li>
+     *     <li>Comments with differing attributes are not equal.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> All equality properties hold as expected.</p>
      */
     @Test
     @DisplayName("Test equals() method")
@@ -194,6 +236,15 @@ class CommentTest {
 
     /**
      * Tests the {@code hashCode()} method to ensure consistency with {@code equals()}.
+     * <p>
+     * Validates that:
+     * <ul>
+     *     <li>Equal comments have identical hash codes.</li>
+     *     <li>Different comments have differing hash codes.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> Hash codes are consistent with equality results.</p>
      */
     @Test
     @DisplayName("Test hashCode() method")
@@ -207,17 +258,37 @@ class CommentTest {
 
     /**
      * Tests the {@code toString()} method to ensure it includes all relevant fields.
+     * <p>
+     * Ensures that the string representation of a comment contains:
+     * <ul>
+     *     <li>Comment's ID</li>
+     *     <li>Content</li>
+     *     <li>Timestamps like {@code createdAt} and {@code updatedAt}</li>
+     *     <li>Associations like {@code post} and {@code user}</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> {@code toString} output matches the expected format and contains all necessary fields.</p>
      */
     @Test
     @DisplayName("Test toString() method")
     void testToString() {
-        // Since 'post' and 'user' are excluded from toString(), adjust the expected string accordingly
-        String expected = "Comment(id=1, content=This is a test comment., createdAt=null, updatedAt=null)";
+        // Since 'post' and 'user' are included in toString(), ensure they are represented correctly
+        String expected = "Comment(id=1, content=This is a test comment., createdAt=null, updatedAt=null, post=Post(id=1, title=Test Post), user=User(id=1, name=John Doe))";
         assertEquals(expected, comment.toString(), "toString output mismatch");
     }
 
     /**
      * Tests the {@code canEqual()} method to ensure proper equality checks.
+     * <p>
+     * Validates that:
+     * <ul>
+     *     <li>{@code canEqual} returns {@code true} when comparing with another {@link Comment} instance.</li>
+     *     <li>{@code canEqual} returns {@code false} when comparing with an object of a different type.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> {@code canEqual} behaves correctly based on the object type.</p>
      */
     @Test
     @DisplayName("Test canEqual() method")
@@ -234,6 +305,10 @@ class CommentTest {
      * <p>
      * Verifies that {@code onCreate()} correctly sets the {@code createdAt} and {@code updatedAt} fields.
      * </p>
+     * 
+     * <p><b>Pass Condition:</b> Both {@code createdAt} and {@code updatedAt} are set and equal.</p>
+     * 
+     * @throws Exception if reflection fails to access or invoke the method
      */
     @Test
     @DisplayName("Test onCreate() lifecycle callback")
@@ -258,6 +333,10 @@ class CommentTest {
      * <p>
      * Verifies that {@code onUpdate()} correctly updates the {@code updatedAt} field.
      * </p>
+     * 
+     * <p><b>Pass Condition:</b> {@code updatedAt} is set and is after {@code createdAt}.</p>
+     * 
+     * @throws Exception if reflection fails to access or invoke the method
      */
     @Test
     @DisplayName("Test onUpdate() lifecycle callback")
@@ -280,6 +359,16 @@ class CommentTest {
 
     /**
      * Tests adding and removing Post associations.
+     * <p>
+     * Ensures that:
+     * <ul>
+     *     <li>A {@link Comment} can be associated with a {@link Post}.</li>
+     *     <li>The association can be updated to a different {@link Post}.</li>
+     *     <li>The association can be removed (set to {@code null}).</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> The {@code post} field reflects the changes correctly.</p>
      */
     @Test
     @DisplayName("Test adding and removing Post associations")
@@ -305,6 +394,16 @@ class CommentTest {
 
     /**
      * Tests adding and removing User associations.
+     * <p>
+     * Ensures that:
+     * <ul>
+     *     <li>A {@link Comment} can be associated with a {@link User}.</li>
+     *     <li>The association can be updated to a different {@link User}.</li>
+     *     <li>The association can be removed (set to {@code null}).</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> The {@code user} field reflects the changes correctly.</p>
      */
     @Test
     @DisplayName("Test adding and removing User associations")
