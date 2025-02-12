@@ -18,8 +18,8 @@ import java.time.LocalDateTime; // Added import for LocalDateTime
  * {@code toString()}, and association management methods for posts, comments, likes, and notifications.
  * </p>
  * 
- * @version 1.0
- * @since 2025-01-28
+ * <p><b>Version:</b> 1.0</p>
+ * <p><b>Since:</b> 2025-01-28</p>
  */
 class UserTest {
 
@@ -29,6 +29,14 @@ class UserTest {
 
     /**
      * Initializes sample {@link User} instances before each test.
+     * <p>
+     * Sets up three users:
+     * <ul>
+     *     <li>{@code user}: A primary user with specific attributes.</li>
+     *     <li>{@code anotherUser}: A user identical to {@code user} to test equality.</li>
+     *     <li>{@code differentUser}: A distinct user with different attributes to test inequality.</li>
+     * </ul>
+     * </p>
      */
     @BeforeEach
     void setUp() {
@@ -57,6 +65,17 @@ class UserTest {
 
     /**
      * Tests the no-args constructor and verifies that all fields are initialized to their default values.
+     * <p>
+     * Ensures that:
+     * <ul>
+     *     <li>Numeric fields like {@code id} are {@code null}.</li>
+     *     <li>String fields like {@code name}, {@code email}, and {@code password} are {@code null}.</li>
+     *     <li>{@code role} defaults to {@code "USER"}.</li>
+     *     <li>Collections like {@code posts}, {@code comments}, {@code likes}, and {@code notifications} are initialized and not {@code null}.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> All assertions hold true, indicating proper initialization.</p>
      */
     @Test
     @DisplayName("Test no-args constructor and default values")
@@ -75,6 +94,15 @@ class UserTest {
 
     /**
      * Tests the all-arguments constructor by verifying that all fields are correctly initialized.
+     * <p>
+     * Creates a {@link User} instance using the all-args constructor with specific values and ensures that:
+     * <ul>
+     *     <li>All fields are set to the provided values.</li>
+     *     <li>Associated collections are correctly assigned.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> All fields match the values passed to the constructor.</p>
      */
     @Test
     @DisplayName("Test all-args constructor")
@@ -109,6 +137,15 @@ class UserTest {
 
     /**
      * Tests the getters and setters by setting each field and verifying the values.
+     * <p>
+     * Ensures that:
+     * <ul>
+     *     <li>Each setter correctly assigns the provided value.</li>
+     *     <li>Each getter retrieves the expected value.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> All fields are correctly set and retrieved.</p>
      */
     @Test
     @DisplayName("Test getters and setters")
@@ -144,6 +181,19 @@ class UserTest {
 
     /**
      * Tests the {@code equals()} method for reflexivity, symmetry, transitivity, and null comparison.
+     * <p>
+     * Validates that:
+     * <ul>
+     *     <li>A user is equal to itself (reflexive).</li>
+     *     <li>Two users with identical attributes are equal (symmetric).</li>
+     *     <li>Equality is transitive across multiple identical users.</li>
+     *     <li>Consistency is maintained across multiple invocations.</li>
+     *     <li>A user is not equal to {@code null} or an object of a different type.</li>
+     *     <li>Users with differing attributes are not equal.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> All equality properties hold as expected.</p>
      */
     @Test
     @DisplayName("Test equals() method")
@@ -183,6 +233,15 @@ class UserTest {
 
     /**
      * Tests the {@code hashCode()} method to ensure consistency with {@code equals()}.
+     * <p>
+     * Validates that:
+     * <ul>
+     *     <li>Equal users have identical hash codes.</li>
+     *     <li>Different users have differing hash codes.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> Hash codes are consistent with equality results.</p>
      */
     @Test
     @DisplayName("Test hashCode() method")
@@ -196,6 +255,19 @@ class UserTest {
 
     /**
      * Tests the {@code toString()} method to ensure it includes all relevant fields.
+     * <p>
+     * Ensures that the string representation of a user contains:
+     * <ul>
+     *     <li>User's ID</li>
+     *     <li>Name</li>
+     *     <li>Email</li>
+     *     <li>Password</li>
+     *     <li>Role</li>
+     *     <li>Associated collections (posts, comments, likes, notifications)</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> {@code toString} output matches the expected format and contains all necessary fields.</p>
      */
     @Test
     @DisplayName("Test toString() method")
@@ -206,6 +278,15 @@ class UserTest {
 
     /**
      * Tests the {@code canEqual()} method to ensure proper equality checks.
+     * <p>
+     * Validates that:
+     * <ul>
+     *     <li>{@code canEqual} returns {@code true} when comparing with another {@link User} instance.</li>
+     *     <li>{@code canEqual} returns {@code false} when comparing with an object of a different type.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> {@code canEqual} behaves correctly based on the object type.</p>
      */
     @Test
     @DisplayName("Test canEqual() method")
@@ -219,6 +300,15 @@ class UserTest {
 
     /**
      * Tests adding a post to the user.
+     * <p>
+     * Creates a new {@link Post}, associates it with the user, and verifies that:
+     * <ul>
+     *     <li>The post is successfully added to the user's posts list.</li>
+     *     <li>The association between the post and the user is correctly established.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> The posts list contains the newly added post.</p>
      */
     @Test
     @DisplayName("Test adding a post to the user")
@@ -240,6 +330,15 @@ class UserTest {
 
     /**
      * Tests adding a comment to the user.
+     * <p>
+     * Creates a new {@link Comment}, associates it with the user, and verifies that:
+     * <ul>
+     *     <li>The comment is successfully added to the user's comments list.</li>
+     *     <li>The association between the comment and the user is correctly established.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> The comments list contains the newly added comment.</p>
      */
     @Test
     @DisplayName("Test adding a comment to the user")
@@ -256,6 +355,15 @@ class UserTest {
 
     /**
      * Tests adding a like to the user.
+     * <p>
+     * Creates a new {@link Like}, associates it with the user, and verifies that:
+     * <ul>
+     *     <li>The like is successfully added to the user's likes list.</li>
+     *     <li>The association between the like and the user is correctly established.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> The likes list contains the newly added like.</p>
      */
     @Test
     @DisplayName("Test adding a like to the user")
@@ -271,6 +379,15 @@ class UserTest {
 
     /**
      * Tests adding a notification to the user.
+     * <p>
+     * Creates a new {@link Notification}, associates it with the user, and verifies that:
+     * <ul>
+     *     <li>The notification is successfully added to the user's notifications list.</li>
+     *     <li>The association between the notification and the user is correctly established.</li>
+     * </ul>
+     * </p>
+     * 
+     * <p><b>Pass Condition:</b> The notifications list contains the newly added notification.</p>
      */
     @Test
     @DisplayName("Test adding a notification to the user")
