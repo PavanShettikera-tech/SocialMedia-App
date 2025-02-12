@@ -15,21 +15,32 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Test class for {@link PostRepository}.
+ * Unit tests for the {@link PostRepository}.
+ * <p>
+ * This class verifies the core CRUD operations for the {@link Post} entity
+ * using an in-memory database configured via {@code @DataJpaTest}.
+ * </p>
  *
- * <p><strong>Premise:</strong>
- * Validates fundamental CRUD operations on Post entities within an in-memory database context.
+ * <p><strong>Premise:</strong></p>
+ * <ul>
+ *     <li>Tests basic persistence, retrieval, and deletion functionalities of the repository.</li>
+ *     <li>Ensures that associations between {@link Post} and {@link User} are properly handled.</li>
+ * </ul>
  *
  * <p><strong>Error Conditions / Acceptable Values:</strong></p>
  * <ul>
- *   <li>Title/Content can be any string. We test typical creation, retrieval, deletion flows.</li>
+ *     <li>Title and Content can be any valid string. Tests ensure that persistence and retrieval work correctly.</li>
+ *     <li>Post must have an associated {@link User} to be valid.</li>
  * </ul>
  *
- * <p><strong>Pass/Fail Conditions:</strong>
+ * <p><strong>Pass/Fail Conditions:</strong></p>
  * <ul>
- *   <li>Pass: If basic JPA operations (save, findById, findAll, delete) work as expected.</li>
- *   <li>Fail: If data is not persisted or incorrectly retrieved.</li>
+ *     <li><strong>Pass:</strong> If basic JPA operations (save, findById, findAll, delete) work as expected.</li>
+ *     <li><strong>Fail:</strong> If data is not persisted correctly or retrieval returns incorrect results.</li>
  * </ul>
+ *
+ * @version 1.1
+ * @since 2025-01-28
  */
 @DataJpaTest
 class PostRepositoryTest {
@@ -42,6 +53,12 @@ class PostRepositoryTest {
 
     private User user;
 
+    /**
+     * Sets up the test environment before each test case.
+     * <p>
+     * Creates and persists a test {@link User} that will be associated with all test posts.
+     * </p>
+     */
     @BeforeEach
     void setUp() {
         user = new User();
@@ -51,6 +68,14 @@ class PostRepositoryTest {
         userRepository.save(user);
     }
 
+    /**
+     * Tests saving a {@link Post} entity to the repository.
+     * <p>
+     * Ensures that a post can be successfully persisted and retrieved with all its properties intact.
+     * </p>
+     *
+     * <p><strong>Pass Condition:</strong> The saved post has a generated ID and matches the provided attributes.</p>
+     */
     @Test
     @DisplayName("Test saving a post")
     void testSavePost() {
@@ -67,6 +92,14 @@ class PostRepositoryTest {
         assertThat(savedPost.getUser()).isEqualTo(user);
     }
 
+    /**
+     * Tests retrieving a {@link Post} entity by its ID.
+     * <p>
+     * Saves a post and verifies that it can be correctly retrieved using {@code findById()}.
+     * </p>
+     *
+     * <p><strong>Pass Condition:</strong> The retrieved post must be present and match the expected attributes.</p>
+     */
     @Test
     @DisplayName("Test finding a post by ID")
     void testFindById() {
@@ -81,6 +114,14 @@ class PostRepositoryTest {
         assertThat(foundPost.get().getTitle()).isEqualTo("Find Post");
     }
 
+    /**
+     * Tests retrieving all posts in the repository.
+     * <p>
+     * Persists multiple posts and ensures that they can be retrieved correctly via {@code findAll()}.
+     * </p>
+     *
+     * <p><strong>Pass Condition:</strong> The repository returns the expected number of posts, and their attributes match.</p>
+     */
     @Test
     @DisplayName("Test retrieving all posts")
     void testFindAll() {
@@ -101,6 +142,14 @@ class PostRepositoryTest {
         assertThat(posts).extracting(Post::getTitle).containsExactlyInAnyOrder("Post 1", "Post 2");
     }
 
+    /**
+     * Tests deleting a {@link Post} entity from the repository.
+     * <p>
+     * Ensures that a saved post can be successfully deleted and is no longer retrievable.
+     * </p>
+     *
+     * <p><strong>Pass Condition:</strong> After deletion, {@code findById()} should return an empty result.</p>
+     */
     @Test
     @DisplayName("Test deleting a post")
     void testDeletePost() {
